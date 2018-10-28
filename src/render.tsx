@@ -1,12 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {hot, setConfig} from "react-hot-loader";
 
-const renderRoot = document.getElementById("renderRoot");
+const renderRoot = document.getElementById("app");
+setConfig({logLevel: "no-errors-please"});
 
 declare type Renderer = (
-	app: Array<React.ReactElement<any>>
+	App: React.ComponentType<any>
 ) => React.Component<any, React.ComponentState> | Element | void;
 
-const render: Renderer = app => ReactDOM.render(app, renderRoot);
-
-export default render;
+export const render: Renderer = App =>
+	{
+		const HotApp = hot(module)(App);
+		return ReactDOM.render(<HotApp/>, renderRoot)
+	};

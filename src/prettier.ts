@@ -1,74 +1,70 @@
-import {watch as w} from "chokidar";
+import chalk from "chalk";
 import fs from "fs";
 import globby from "globby";
 import pify from "pify";
 import {format as f} from "prettier";
-import getConfig, {PrettierConfig} from "./load";
+import getConfig, {IPrettierConfig} from "./load";
+import log from "./log";
 const {readFile, writeFile} = pify(fs);
 
-const formatAndWrite = async (file: string, options: PrettierConfig) => {
+export interface IFormatResult {
+	pretty: string;
+	diff: string;
+}
+const format = async (file: string, options: IPrettierConfig): Promise<IFormatResult> => {
 	const source = await readFile(file, "utf-8");
+	const t0 = new Date().valueOf();
 	const pretty = f(source, options);
-	writeFile(file, pretty, "utf-8");
+	const t1 = new Date().valueOf();
+	const diff = `${Math.floor(t1 - t0)}`;
+	return {pretty, diff};
 };
 
-export const format = async () => {
-	const config = await getConfig();
-	const tsFiles = await globby(["**/*.{ts,tsx}", "!node_modules"]);
-	const mdFiles = await globby(["**/*.{md,markdown}", "!node_modules"]);
-	const jsonFiles = await globby(["**/*.json", "!node_modules"]);
-
-	tsFiles.forEach(async file => {
-		formatAndWrite(file, {...config.prettier.config, parser: "typescript"});
-	});
-
-	mdFiles.forEach(async file => {
-		formatAndWrite(file, {...config.prettier.config, parser: "markdown"});
-	});
-
-	jsonFiles.forEach(async file => {
-		formatAndWrite(file, {...config.prettier.config, parser: "json"});
-	});
+const formatAndWrite = async (file: string, options: IPrettierConfig): Promise<void> => {
+	const {pretty, diff} = await format(file, options);
+	log.info(chalk`{grey ${file}} ${diff}ms`);
+	return writeFile(file, pretty, "utf-8");
 };
 
-export const watch = async () => {
-	const config = await getConfig();
-	const tsWatcher = w("**/*.{ts,tsx}", {
-		ignored: "node_modules",
-		persistent: true
-	});
-	const mdWatcher = w("**/*.{md,markdown}", {
-		ignored: "node_modules",
-		persistent: true
-	});
-	const jsonWatcher = w("**/*.json", {
-		ignored: "node_modules",
-		persistent: true
-	});
-	tsWatcher
-		.on("add", file => {
-			formatAndWrite(file, {...config.prettier.config, parser: "typescript"});
-		})
-		.on("change", file => {
-			formatAndWrite(file, {...config.prettier.config, parser: "typescript"});
-		});
-	mdWatcher
-		.on("add", file => {
-			formatAndWrite(file, {...config.prettier.config, parser: "markdown"});
-		})
-		.on("change", file => {
-			formatAndWrite(file, {...config.prettier.config, parser: "markdown"});
-		});
-	jsonWatcher
-		.on("add", file => {
-			formatAndWrite(file, {...config.prettier.config, parser: "json"});
-		})
-		.on("change", file => {
-			formatAndWrite(file, {...config.prettier.config, parser: "json"});
-		});
+export const prettier = async (): Promise<void> => {
+	const {prettier: config, imhotep} = await getConfig();
+	const jsFiles = await globby([
+		"**/*.{js,jsx}",
+		"!node_modules",
+		`!${imhotep.lib.path}`,
+		`!${imhotep.output.path}`,
+		...(imhotep.ignore || []).map(x => `!${x}`)
+	]);
+	const tsFiles = await globby([
+		"**/*.{ts,tsx}",
+		"!node_modules",
+		`!${imhotep.types.path}`,
+		...(imhotep.ignore || []).map(x => `!${x}`)
+	]);
+	const mdFiles = await globby([
+		"**/*.{md,markdown}",
+		"!node_modules",
+		...(imhotep.ignore || []).map(x => `!${x}`)
+	]);
+	const jsonFiles = await globby([
+		"**/*.json",
+		"!node_modules",
+		...(imhotep.ignore || []).map(x => `!${x}`)
+	]);
+	const rcFiles = await globby([
+		"**/.*rc",
+		"!node_modules",
+		...(imhotep.ignore || []).map(x => `!${x}`)
+	]);
+
+	await Promise.all(jsFiles.map(file => formatAndWrite(file, {...config, parser: "babylon"})));
+	await Promise.all(tsFiles.map(file => formatAndWrite(file, {...config, parser: "typescript"})));
+	await Promise.all(mdFiles.map(file => formatAndWrite(file, {...config, parser: "markdown"})));
+	await Promise.all(
+		[...jsonFiles, ...rcFiles].map(file => formatAndWrite(file, {...config, parser: "json"}))
+	);
+
+	log.info("");
 };
 
-export default {
-	format,
-	watch
-};
+export default prettier;

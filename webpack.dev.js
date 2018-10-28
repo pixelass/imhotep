@@ -7,6 +7,8 @@ module.exports = (env, argv) =>
 		devtool: "inline-source-map",
 		devServer: {
 			hot: true,
+			port: 3000,
+			host: "localhost",
 			inline: true
 		},
 		mode: "development",

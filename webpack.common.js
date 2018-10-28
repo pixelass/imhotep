@@ -8,9 +8,7 @@ const OUT_DIR = path.resolve(ROOT, "docs");
 
 module.exports = (env, argv) => {
 	return {
-		entry: {
-			main: path.resolve(APP, "index.tsx")
-		},
+		entry: path.resolve(APP, "index.tsx"),
 		output: {
 			path: OUT_DIR,
 			filename: "[name].js",
@@ -57,13 +55,13 @@ module.exports = (env, argv) => {
 			new HtmlWebpackHarddiskPlugin(),
 			new FaviconsWebpackPlugin({
 				logo: path.resolve(__dirname, "demo/favicon.png"),
-				prefix: 'icons/',
+				prefix: "icons/",
 				emitStats: false,
-				statsFilename: 'iconstats-[hash].json',
+				statsFilename: "iconstats-[hash].json",
 				persistentCache: true,
 				inject: true,
-				background: 'white',
-				title: 'over-scroll',
+				background: "white",
+				title: "over-scroll"
 			})
 		]
 	};
