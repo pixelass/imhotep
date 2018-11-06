@@ -16,6 +16,9 @@ module.exports = (env, argv) => {
 			libraryTarget: "umd"
 		},
 		resolve: {
+			alias: {
+				imhotep: path.resolve(__dirname, 'lib/src')
+			},
 			extensions: [".ts", ".tsx", ".js", ".jsx"]
 		},
 		module: {
@@ -37,6 +40,23 @@ module.exports = (env, argv) => {
 					options: {
 						name: "fonts/[sha512:hash:base64:7].[ext]"
 					}
+				},
+				{
+					test: /\.css$/,
+					use: [
+						'style-loader',
+						{ loader: 'css-loader', options: { importLoaders: 1 } },
+						'postcss-loader'
+					]
+				},
+				{
+					test: /\.scss$/,
+					use: [
+						"style-loader",
+						{ loader: 'css-loader', options: { importLoaders: 1 } },
+						'postcss-loader',
+						"sass-loader"
+					]
 				}
 			]
 		},
@@ -48,20 +68,19 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			new HtmlWebpackPlugin({
-				template: path.resolve(__dirname, "demo/index.html"),
+				template: path.resolve(__dirname, "app/index.html"),
 				alwaysWriteToDisk: true,
 				filename: "index.html"
 			}),
 			new HtmlWebpackHarddiskPlugin(),
 			new FaviconsWebpackPlugin({
-				logo: path.resolve(__dirname, "demo/favicon.png"),
+				logo: path.resolve(__dirname, "app/favicon.png"),
 				prefix: "icons/",
 				emitStats: false,
 				statsFilename: "iconstats-[hash].json",
 				persistentCache: true,
 				inject: true,
-				background: "white",
-				title: "over-scroll"
+				background: "white"
 			})
 		]
 	};

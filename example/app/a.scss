@@ -1,0 +1,10 @@
+$background: hsl(100, 100%, 50%);
+body {
+	background: $background;
+}
+
+.foo {
+	height: 10px;
+	background: $background;
+	a: b;
+}

@@ -1,5 +1,5 @@
 module.exports = {
-	entry: "demo/index.tsx",
+	entry: "app/index.tsx",
 	output: {
 		path: "docs"
 	},
@@ -10,7 +10,7 @@ module.exports = {
 		path: "src"
 	},
 	types: {
-		path: "types"
+		path: "lib"
 	},
 	ignore: ["package.json"]
 };

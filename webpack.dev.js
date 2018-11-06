@@ -6,11 +6,11 @@ module.exports = (env, argv) =>
 	merge(common(env, argv), {
 		devtool: "inline-source-map",
 		devServer: {
-			hot: true,
+			hot: argv.includes("--hot"),
 			port: 3000,
 			host: "localhost",
 			inline: true
 		},
 		mode: "development",
-		plugins: [new HotModuleReplacementPlugin()]
+		plugins: argv.includes("--hot") ? [new HotModuleReplacementPlugin()] : []
 	});

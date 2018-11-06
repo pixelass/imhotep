@@ -19,19 +19,24 @@
 	],
 	"license": "MIT",
 	"author": "Gregor Adams <greg@pixelass.com> (http://pixelass.com)",
-	"main": "lib/index.js",
+	"main": "./lib/src/index.js",
+	"types": "./lib/src/index.d.ts",
 	"bin": {
-		"imhotep": "./lib/bin.js"
+		"imhotep": "./lib/src/bin/bin.js"
 	},
+	"files": [
+		"lib/*",
+		"app/index.html",
+		"app/imports.d.ts",
+		"app/favicon.png",
+		".babelrc",
+		"tslint.json",
+		"webpack.common.js",
+		"webpack.dev.js",
+		"webpack.prod.js"
+	],
 	"scripts": {
-		"i:babel": "node lib/bin babel --watch",
-		"i:build": "node lib/bin build",
-		"i:clean": "node lib/bin clean",
-		"i:dev": "node lib/bin dev",
-		"i:format": "node lib/bin format",
-		"i:lint": "node lib/bin lint --fix",
-		"i:test": "node lib/bin test --watch",
-		"babel": "NODE_ENV=production babel src --out-dir lib --extensions '.ts,.tsx'",
+		"babel": "NODE_ENV=production babel src --out-dir lib/src --extensions '.ts,.tsx'",
 		"bundlesize": "bundlesize",
 		"clean": "rimraf lib",
 		"format": "yarn run format:md; yarn run format:ts; yarn run format:json",
@@ -41,10 +46,12 @@
 		"lint": "yarn run lint:ts",
 		"lint:css": "stylelint '{demo,src}/**/*.{(pc|sc|c|le)ss,tsx?}'",
 		"lint:ts": "tslint-config-prettier-check ./tslint.json",
-		"package": "yarn clean && yarn babel",
+		"package": "yarn clean && yarn babel && yarn types",
 		"prerelease": "yarn babel; yarn test",
+		"refresh": "rimraf package && yarn package && yarn pack && tar -zxvf imhotep-v0.1.0.tgz && rimraf imhotep-v0.1.0.tgz",
 		"release": "standard-version --no-verify",
-		"test": "ava"
+		"test": "ava",
+		"types": "tsc --declaration --outDir lib --emitDeclarationOnly"
 	},
 	"dependencies": {
 		"@babel/cli": "7.1.2",
@@ -52,6 +59,7 @@
 		"@babel/plugin-proposal-class-properties": "^7.1.0",
 		"@babel/plugin-proposal-decorators": "^7.1.2",
 		"@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+		"@babel/polyfill": "^7.0.0",
 		"@babel/preset-env": "7.1.0",
 		"@babel/preset-react": "7.0.0",
 		"@babel/preset-typescript": "^7.1.0",
@@ -80,6 +88,7 @@
 		"concurrently": "^4.0.1",
 		"cosmiconfig": "^5.0.6",
 		"cross-env": "5.2.0",
+		"css-loader": "^1.0.1",
 		"enzyme": "^3.7.0",
 		"enzyme-adapter-react-16": "^1.6.0",
 		"execa": "^1.0.0",
@@ -91,14 +100,19 @@
 		"husky": "1.1.2",
 		"jsx-test-helpers": "^3.0.0",
 		"meow": "^5.0.0",
+		"node-sass": "^4.10.0",
 		"pify": "^4.0.1",
+		"postcss-loader": "^3.0.0",
+		"postcss-preset-env": "^6.4.0",
 		"prettier": "1.14.3",
 		"react": "^16.6.0",
 		"react-dom": "^16.6.0",
 		"react-hot-loader": "^4.3.11",
 		"react-perf-devtool": "^3.1.8",
 		"rimraf": "2.6.2",
+		"sass-loader": "^7.1.0",
 		"standard-version": "^4.4.0",
+		"style-loader": "^0.23.1",
 		"style-search": "0.1.0",
 		"stylelint": "9.7.0",
 		"stylelint-a11y": "1.1.8",
@@ -124,16 +138,12 @@
 		"winston": "^3.1.0"
 	},
 	"peerDependencies": {
+		"@types/react": "16.4.18",
+		"@types/react-dom": "16.0.9",
 		"ava": "^0.25.0",
 		"react": "^16.6.0",
 		"react-dom": "^16.6.0",
 		"tslib": "1.9.3"
 	},
-	"browserslist": [
-		"last 2 Chrome versions",
-		"last 2 Firefox versions",
-		"last 2 Safari versions",
-		"last 2 Edge versions"
-	],
 	"sideEffects": false
 }

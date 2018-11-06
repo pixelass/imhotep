@@ -13,6 +13,9 @@ export interface IBrowserslistConfig {
 export interface IImhotepConfig {
 	[key: string]: any;
 }
+export interface IPostcssConfig {
+	[key: string]: any;
+}
 export interface IPrettierConfig {
 	[key: string]: any;
 }
@@ -29,6 +32,7 @@ export interface IConfig {
 	babel: IBabelConfig;
 	browserslist: IBrowserslistConfig;
 	imhotep: IImhotepConfig;
+	postcss: IPostcssConfig;
 	prettier: IPrettierConfig;
 	stylelint: IStylelintConfig;
 	tsconfig: ITsConfig;
@@ -59,12 +63,23 @@ const getConfig = async (): Promise<IConfig> => {
 			"last 2 Edge versions"
 		],
 		imhotep: {
-			entry: {
-				main: path.resolve(cwd, "app/index.tsx")
+			entry: "app/index.tsx",
+			ignore: ["package.json"],
+			lib: {
+				path: "lib"
 			},
 			output: {
-				path: "public"
+				path: "docs"
+			},
+			src: {
+				path: "src"
+			},
+			types: {
+				path: "lib"
 			}
+		},
+		postcss: {
+			plugins: [require("postcss-preset-env")]
 		},
 		prettier: {
 			arrowParens: "avoid",
@@ -153,6 +168,10 @@ const getConfig = async (): Promise<IConfig> => {
 			...(await c("browserslist").search()).config
 		},
 		imhotep: {...defaults.imhotep, ...(await c("imhotep").search()).config},
+		postcss: {
+			...defaults.postcss,
+			...(await c("postcss").search()).config
+		},
 		prettier: {
 			...defaults.prettier,
 			...(await c("prettier").search()).config

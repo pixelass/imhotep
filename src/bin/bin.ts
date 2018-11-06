@@ -3,10 +3,12 @@ import meow from "meow";
 import babel from "./babel";
 import clean from "./clean";
 import log from "./log";
+import pack from "./pack";
 import prettier from "./prettier";
 import release from "./release";
 import stylelint from "./stylelint";
 import testrunner from "./testrunner";
+import types from "./types";
 import build from "./webpack";
 import dev from "./webpack-dev-server";
 
@@ -73,13 +75,19 @@ interface IInput {
 	format?: boolean;
 	init?: boolean;
 	lint?: boolean;
+	pack?: boolean;
 	release?: boolean;
 	test?: boolean;
+	types?: boolean;
 }
 
 const run = async () => {
 	const {input = [], flags = {}}: ICli = cli;
 	const inputValues: IInput = input.reduce((a, b) => ({...a, [b]: true}), {});
+
+	if (inputValues.clean) {
+		await clean();
+	}
 
 	if (inputValues.format) {
 		await prettier();
@@ -89,32 +97,41 @@ const run = async () => {
 		await stylelint(flags.fix);
 	}
 
-	if (inputValues.test) {
-		await testrunner(flags.watch);
-	}
-
-	if (inputValues.release) {
-		await release(flags.dry);
-	}
-
-	if (inputValues.clean) {
-		await clean();
-	}
-
 	if (inputValues.babel) {
 		await babel(flags.watch);
 	}
 
+	if (inputValues.types) {
+		await types(flags.watch);
+	}
+
+	if (inputValues.test) {
+		await testrunner(flags.watch);
+	}
+
+	if (inputValues.pack) {
+		await pack();
+		return;
+	}
+
 	if (inputValues.build) {
 		await build(flags.watch);
+		return;
 	}
 
 	if (inputValues.dev) {
 		await dev(flags.hot);
+		return;
+	}
+
+	if (inputValues.release) {
+		await release(flags.dry);
+		return;
 	}
 
 	if (inputValues.init) {
 		log.info("init task missing");
+		return;
 	}
 };
 
