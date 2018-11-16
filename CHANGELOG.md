@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/pixelass/imhotep/compare/v0.1.5...v0.1.6) (2018-11-16)
+
+
+### Bug Fixes
+
+* fix build task and example ([267d648](https://github.com/pixelass/imhotep/commit/267d648))
+
+
+
 <a name="0.1.5"></a>
 
 ## [0.1.5](https://github.com/pixelass/imhotep/compare/v0.1.4...v0.1.5) (2018-11-16)
