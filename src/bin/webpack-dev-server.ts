@@ -23,6 +23,7 @@ const dev = async (hot: boolean) => {
 		"webpack/hot/dev-server",
 		path.resolve(cwd, imhotep.entry)
 	];
+	devOptions.output.path = imhotep.output.path;
 	const compiler = webpack(devOptions);
 	const devServerOptions = {
 		...devOptions.devServer,
