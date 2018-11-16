@@ -8,13 +8,15 @@
 	"scripts": {
 		"babel": "imhotep babel",
 		"build": "imhotep build",
+		"build:prod": "NODE_ENV=production imhotep build",
 		"clean": "imhotep clean",
 		"dev": "imhotep dev",
 		"format": "imhotep format",
 		"lint": "imhotep lint",
 		"test": "imhotep test",
 		"package": "imhotep pack",
-		"types": "imhotep types"
+		"types": "imhotep types",
+		"watch": "imhotep build --watch"
 	},
 	"browserslist": [
 		"last 2 Chrome versions",
@@ -23,17 +25,19 @@
 		"last 2 Edge versions"
 	],
 	"dependencies": {
-		"@types/react": "^16.7.6",
-		"@types/react-dom": "^16.0.9",
-		"@types/styled-components": "^4.1.0",
-		"imhotep": "file:../package",
+		"imhotep": "../package",
 		"react": "^16.6.3",
 		"react-dom": "^16.6.3",
 		"styled-components": "^4.1.1",
 		"tslib": "1.9.3"
 	},
 	"devDependencies": {
+		"@types/react": "^16.7.6",
+		"@types/react-dom": "^16.0.9",
+		"@types/styled-components": "^4.1.0",
 		"ava": "^0.25.0",
-		"babel-plugin-styled-components": "^1.8.0"
-	}
+		"babel-plugin-styled-components": "^1.8.0",
+		"babel-preset-minify": "^0.5.0"
+	},
+	"sideEffects": false
 }

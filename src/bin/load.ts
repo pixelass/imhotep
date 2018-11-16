@@ -167,18 +167,18 @@ const getConfig = async (): Promise<IConfig> => {
 			...defaults.browserslist,
 			...(await c("browserslist").search()).config
 		},
-		imhotep: {...defaults.imhotep, ...(await c("imhotep").search()).config},
+		imhotep: {...defaults.imhotep, ...((await c("imhotep").search()) || {config: {}}).config},
 		postcss: {
 			...defaults.postcss,
-			...(await c("postcss").search()).config
+			...((await c("postcss").search()) || {config: {}}).config
 		},
 		prettier: {
 			...defaults.prettier,
-			...(await c("prettier").search()).config
+			...((await c("prettier").search()) || {config: {}}).config
 		},
 		stylelint: {
 			...defaults.stylelint,
-			...(await c("stylelint").search()).config
+			...((await c("stylelint").search()) || {config: {}}).config
 		},
 		tsconfig: {
 			...defaults.tsconfig,

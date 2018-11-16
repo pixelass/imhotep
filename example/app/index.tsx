@@ -1,5 +1,5 @@
-import {render, renderRoot} from "imhotep";
+import {render} from "imhotep";
 import React from "react";
 import MyApp from "./app";
 
-render(<MyApp />, renderRoot);
+render(<MyApp />);

@@ -10,7 +10,7 @@ import stylelint from "./stylelint";
 import testrunner from "./testrunner";
 import types from "./types";
 import build from "./webpack";
-import dev from "./webpack-dev-server";
+import dev from "./webpack/dev-server";
 
 const cli = meow(
 	`

@@ -12,5 +12,5 @@
 			]
 		}
 	},
-	"extends": "imhotep/.babelrc"
+	"extends": "imhotep/config/.babelrc"
 }

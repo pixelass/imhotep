@@ -1,7 +1,7 @@
 import React from "react";
-import styled, {StyledComponentClass} from "styled-components";
+import styled, {StyledComponent} from "styled-components";
 
-const StyledButton: StyledComponentClass<React.ButtonHTMLAttributes<{}>, {}> = styled.button`
+const StyledButton: StyledComponent<any, {}> = styled.button`
 	border-radius: 3px;
 	padding: 0.5em 1em;
 	font-size: 1em;

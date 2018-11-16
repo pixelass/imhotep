@@ -39,18 +39,10 @@ jspm_packages
 # tests
 spec
 
-# source
-src
-.travis.yml
-.babelrc
-.stylelintrc
-.prettierrc
-.editorconfig
-webpack.*.js
-tsconfig.json
-tslint.json
+# dev
 *.zip
 *.tgz
 .idea
 docs
 demo
+examples
