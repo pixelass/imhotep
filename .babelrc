@@ -1,9 +1,16 @@
 {
-	"presets": ["@babel/react", "@babel/typescript", ["@babel/env", {
-		"targets": {
-			"node": "current"
-		}
-	}]],
+	"presets": [
+		"@babel/react",
+		"@babel/typescript",
+		[
+			"@babel/env",
+			{
+				"targets": {
+					"node": "current"
+				}
+			}
+		]
+	],
 	"plugins": [
 		"react-hot-loader/babel",
 		["@babel/plugin-proposal-decorators", {"legacy": true}],
