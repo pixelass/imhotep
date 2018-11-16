@@ -14,9 +14,9 @@ const build = async (watch: boolean) => {
 	const prodOptions = merge({}, localProd(env, argv));
 	const devOptions = merge({}, localDev(env, argv));
 	devOptions.entry = path.resolve(cwd, imhotep.entry);
-	devOptions.output.path = imhotep.output.path;
+	devOptions.output.path = path.resolve(cwd, imhotep.output.path);
 	prodOptions.entry = path.resolve(cwd, imhotep.entry);
-	prodOptions.output.path = imhotep.output.path;
+	prodOptions.output.path = path.resolve(cwd, imhotep.output.path);
 	const compiler = webpack(env.NODE_ENV === "production" ? prodOptions : devOptions);
 
 	if (watch) {
