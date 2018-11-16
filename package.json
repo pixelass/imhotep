@@ -25,15 +25,12 @@
 		"imhotep": "./lib/src/bin/bin.js"
 	},
 	"directories": {
-		"bin":"./bin",
-		"example":"./example",
-		"test":"./test",
-		"lib":"./lib"
+		"bin": "./bin",
+		"example": "./example",
+		"test": "./test",
+		"lib": "./lib"
 	},
-	"files": [
-		"lib/*",
-		"config/*"
-	],
+	"files": ["lib/*", "config/*"],
 	"scripts": {
 		"babel": "NODE_ENV=production babel src --out-dir lib/src --extensions '.ts,.tsx' --copy-files",
 		"bundlesize": "bundlesize",
