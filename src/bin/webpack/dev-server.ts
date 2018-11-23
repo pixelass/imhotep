@@ -12,7 +12,7 @@ const dev = async (hot: boolean) => {
 	const cwd = process.cwd();
 	const {imhotep} = await getConfig();
 	const {env: imhotepEnv = {}, app = {}, devServer: imhotepDev = {}} = imhotep;
-	const {appPath = "app"} = app;
+	const {path: appPath = "app"} = app;
 	const {plugins = []} = imhotepEnv[NODE_ENV] || {};
 	const entry = path.resolve(cwd, appPath, imhotep.entry);
 	const outputPath = path.resolve(cwd, imhotep.output.path);
