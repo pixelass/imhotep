@@ -1,5 +1,29 @@
+const GoogleFontsWebpackPlugin = require('@beyonk/google-fonts-webpack-plugin');
+
+const plugins = [
+	new GoogleFontsWebpackPlugin({
+		fonts: [
+			{
+				family: "Open Sans",
+				variations: "300,700"
+			}
+		]
+	})
+];
+
 module.exports = {
-	entry: "app/index.tsx",
+	app: {
+		path: "app"
+	},
+	entry: "index.tsx",
+	env: {
+		"development": {
+			plugins
+		},
+		"production": {
+			plugins
+		}
+	},
 	output: {
 		path: "docs"
 	},
@@ -12,5 +36,5 @@ module.exports = {
 	types: {
 		path: "lib"
 	},
-	ignore: []
+	ignore: ["package.json", "CHANGELOG.md"]
 };
