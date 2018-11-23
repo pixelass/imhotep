@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {setConfig} from "react-hot-loader";
 
 export type RootElement = HTMLElement;
-export const renderRoot: RootElement = document.getElementById("app");
+export const renderRoot: RootElement = document.querySelector("[data-imhotep-app]");
 
 export declare type Renderer = (app: any, rootElement?: RootElement) => any;
 

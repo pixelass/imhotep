@@ -1,5 +1,8 @@
 module.exports = {
-	entry: "app/index.tsx",
+	app: {
+		path: "app"
+	},
+	entry: "index.tsx",
 	output: {
 		path: "docs"
 	},
@@ -12,5 +15,5 @@ module.exports = {
 	types: {
 		path: "lib"
 	},
-	ignore: ["package.json"]
+	ignore: ["package.json", "CHANGELOG.md"]
 };

@@ -32,29 +32,24 @@ export const prettier = async (): Promise<void> => {
 		"**/*.{js,jsx}",
 		"!node_modules",
 		`!${imhotep.lib.path}`,
-		`!${imhotep.output.path}`,
-		...(imhotep.ignore || []).map(x => `!${x}`)
+		`!${imhotep.output.path}`
 	]);
 	const tsFiles = await globby([
 		"**/*.{ts,tsx}",
 		"!node_modules",
-		`!${imhotep.types.path}`,
-		...(imhotep.ignore || []).map(x => `!${x}`)
+		`!${imhotep.types.path}`
 	]);
 	const mdFiles = await globby([
 		"**/*.{md,markdown}",
-		"!node_modules",
-		...(imhotep.ignore || []).map(x => `!${x}`)
+		"!node_modules"
 	]);
 	const jsonFiles = await globby([
 		"**/*.json",
-		"!node_modules",
-		...(imhotep.ignore || []).map(x => `!${x}`)
+		"!node_modules"
 	]);
 	const rcFiles = await globby([
 		"**/.*rc",
-		"!node_modules",
-		...(imhotep.ignore || []).map(x => `!${x}`)
+		"!node_modules"
 	]);
 
 	await Promise.all(jsFiles.map(file => formatAndWrite(file, {...config, parser: "babylon"})));

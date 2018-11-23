@@ -1,20 +1,21 @@
 const merge = require("webpack-merge");
 const common = require("./webpack.common.js");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
+const {HotModuleReplacementPlugin} = require("webpack");
 
-module.exports = (env, argv) =>
-	merge(common(env, argv), {
+module.exports = async (env, argv) =>
+	merge(await common(env, argv), {
 		mode: env.NODE_ENV,
 		devtool: false,
 		optimization: {
 			splitChunks: {
-				chunks: 'all',
+				chunks: "all",
 				minSize: 30000,
 				maxSize: 0,
 				minChunks: 1,
 				maxAsyncRequests: 5,
 				maxInitialRequests: 3,
-				automaticNameDelimiter: '~',
+				automaticNameDelimiter: "~",
 				name: true,
 				cacheGroups: {
 					vendors: {
@@ -30,9 +31,13 @@ module.exports = (env, argv) =>
 			}
 		},
 		plugins: [
-			new MinifyPlugin({}, {
-				sourceMaps: false,
-				comments: false
-			})
+			new MinifyPlugin(
+				{},
+				{
+					sourceMaps: false,
+					comments: false
+				}
+			),
+			...(argv.includes("--hot") ? [new HotModuleReplacementPlugin()] : [])
 		]
 	});

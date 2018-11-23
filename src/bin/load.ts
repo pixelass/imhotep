@@ -1,9 +1,12 @@
-import c from "cosmiconfig";
+import cosmic from "cosmiconfig";
 import fs from "fs";
 import path from "path";
 import pify from "pify";
 
 const {readFile} = pify(fs);
+export interface IConfigObject {
+	[key: string]: any;
+}
 export interface IBabelConfig {
 	[key: string]: any;
 }
@@ -39,6 +42,9 @@ export interface IConfig {
 	tslint: ITslintConfig;
 }
 
+const cosmicWithFallback = async (moduleName: string): Promise<IConfigObject> =>
+	((await cosmic(moduleName).search()) || {config: {}}).config;
+
 const getConfig = async (): Promise<IConfig> => {
 	const cwd = process.cwd();
 
@@ -63,7 +69,18 @@ const getConfig = async (): Promise<IConfig> => {
 			"last 2 Edge versions"
 		],
 		imhotep: {
-			entry: "app/index.tsx",
+			app: {
+				path: "app"
+			},
+			entry: "index.tsx",
+			env: {
+				development: {
+					plugins: []
+				},
+				production: {
+					plugins: []
+				}
+			},
 			ignore: ["package.json"],
 			lib: {
 				path: "lib"
@@ -162,24 +179,21 @@ const getConfig = async (): Promise<IConfig> => {
 		}
 	};
 	return {
-		babel: {...defaults.babel, ...(await c("babel").search()).config},
+		babel: await cosmicWithFallback("babel"),
 		browserslist: {
 			...defaults.browserslist,
-			...(await c("browserslist").search()).config
+			...(await cosmicWithFallback("browserslist"))
 		},
-		imhotep: {...defaults.imhotep, ...((await c("imhotep").search()) || {config: {}}).config},
+		imhotep: {...defaults.imhotep, ...(await cosmicWithFallback("imhotep"))},
 		postcss: {
 			...defaults.postcss,
-			...((await c("postcss").search()) || {config: {}}).config
+			...(await cosmicWithFallback("postcss"))
 		},
 		prettier: {
 			...defaults.prettier,
-			...((await c("prettier").search()) || {config: {}}).config
+			...(await cosmicWithFallback("prettier"))
 		},
-		stylelint: {
-			...defaults.stylelint,
-			...((await c("stylelint").search()) || {config: {}}).config
-		},
+		stylelint: await cosmicWithFallback("stylelint"),
 		tsconfig: {
 			...defaults.tsconfig,
 			...JSON.parse(await readFile(path.resolve(cwd, "tsconfig.json"), "utf-8"))

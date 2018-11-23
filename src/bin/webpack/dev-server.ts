@@ -7,19 +7,20 @@ import log from "../log";
 import localDev from "./webpack.dev.js";
 
 const {env, argv} = process;
-
+const {NODE_ENV = "develpoment"} = env;
 const dev = async (hot: boolean) => {
 	const cwd = process.cwd();
 	const {imhotep} = await getConfig();
-	const entry = path.resolve(cwd, imhotep.entry);
-	const outPath = path.resolve(cwd, imhotep.output.path);
-	const devOptions = merge(localDev(env, argv), {
-		devServer: {
-			contentBase: outPath,
-			hot
+	const {env: imhotepEnv = {}, app = {}, devServer: imhotepDev = {}} = imhotep;
+	const {appPath = "app"} = app;
+	const {plugins = []} = imhotepEnv[NODE_ENV] || {};
+	const entry = path.resolve(cwd, appPath, imhotep.entry);
+	const outputPath = path.resolve(cwd, imhotep.output.path);
+	const devOptions = merge(await localDev(env, argv), {
+		output: {
+			path: outputPath
 		}
 	});
-
 	devOptions.entry = [
 		`webpack-dev-server/client?http://${devOptions.devServer.host}:${
 			devOptions.devServer.port
@@ -27,7 +28,11 @@ const dev = async (hot: boolean) => {
 		"webpack/hot/dev-server",
 		entry
 	];
-	devOptions.output.path = outPath;
+	devOptions.plugins.push(...plugins);
+	devOptions.devServer = {...devOptions.devServer, ...imhotepDev};
+	log.info(`Mode: ${NODE_ENV}`);
+	log.info(`Hot: ${hot || "false"}`);
+
 	const compiler = webpack(devOptions);
 	const devServerOptions = {
 		...devOptions.devServer,
