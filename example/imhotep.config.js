@@ -13,7 +13,7 @@ const plugins = [
 
 module.exports = {
 	app: {
-		path: "app"
+		path: "demo"
 	},
 	entry: "index.tsx",
 	env: {
