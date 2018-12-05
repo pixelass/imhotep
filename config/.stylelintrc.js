@@ -1,4 +1,4 @@
-{
+module.exports = {
 	"processors": [],
 	"plugins": [
 		"stylelint-a11y",
@@ -30,4 +30,4 @@
 		]
 	},
 	"extends": ["stylelint-config-recommended"]
-}
+};

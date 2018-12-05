@@ -10,9 +10,6 @@ export interface IConfigObject {
 export interface IBabelConfig {
 	[key: string]: any;
 }
-export interface IBrowserslistConfig {
-	[key: string]: any;
-}
 export interface IImhotepConfig {
 	[key: string]: any;
 }
@@ -25,21 +22,13 @@ export interface IPrettierConfig {
 export interface IStylelintConfig {
 	[key: string]: any;
 }
-export interface ITsConfig {
-	[key: string]: any;
-}
-export interface ITslintConfig {
-	[key: string]: any;
-}
+
 export interface IConfig {
 	babel: IBabelConfig;
-	browserslist: IBrowserslistConfig;
-	imhotep: IImhotepConfig;
 	postcss: IPostcssConfig;
+	imhotep: IImhotepConfig;
 	prettier: IPrettierConfig;
 	stylelint: IStylelintConfig;
-	tsconfig: ITsConfig;
-	tslint: ITslintConfig;
 }
 
 const cosmicWithFallback = async (moduleName: string): Promise<IConfigObject> =>
@@ -49,25 +38,8 @@ const getConfig = async (): Promise<IConfig> => {
 	const cwd = process.cwd();
 
 	const defaults: IConfig = {
-		babel: {
-			env: {
-				development: {
-					plugins: ["react-hot-loader/babel"]
-				}
-			},
-			plugins: [
-				["@babel/plugin-proposal-decorators", {legacy: true}],
-				["@babel/proposal-class-properties", {loose: true}],
-				"@babel/proposal-object-rest-spread"
-			],
-			presets: ["@babel/react", "@babel/typescript", "@babel/env"]
-		},
-		browserslist: [
-			"last 2 Chrome versions",
-			"last 2 Firefox versions",
-			"last 2 Safari versions",
-			"last 2 Edge versions"
-		],
+		babel: {},
+		postcss: {},
 		imhotep: {
 			app: {
 				path: "app"
@@ -95,9 +67,6 @@ const getConfig = async (): Promise<IConfig> => {
 				path: "lib"
 			}
 		},
-		postcss: {
-			plugins: [require("postcss-preset-env")]
-		},
 		prettier: {
 			arrowParens: "avoid",
 			bracketSpacing: false,
@@ -110,98 +79,17 @@ const getConfig = async (): Promise<IConfig> => {
 			trailingComma: "none",
 			useTabs: true
 		},
-		stylelint: {
-			extends: ["stylelint-config-recommended"],
-			plugins: [
-				"stylelint-a11y",
-				"stylelint-csstree-validator",
-				"stylelint-color-format",
-				"stylelint-declaration-block-no-ignored-properties",
-				"stylelint-high-performance-animation",
-				"stylelint-no-unsupported-browser-features",
-				"stylelint-order"
-			],
-			processors: [],
-			rules: {
-				"color-format/format": {
-					format: "hsl"
-				},
-				"csstree/validator": [
-					true,
-					{
-						severity: "warn"
-					}
-				],
-				"order/order": ["custom-properties", "declarations"],
-				"plugin/no-low-performance-animation-properties": true,
-				"plugin/no-unsupported-browser-features": [
-					true,
-					{
-						ignore: ["rem"],
-						severity: "warn"
-					}
-				]
-			}
-		},
-		tsconfig: {
-			compilerOptions: {
-				allowSyntheticDefaultImports: true,
-				alwaysStrict: true,
-				declaration: false,
-				esModuleInterop: true,
-				experimentalDecorators: true,
-				importHelpers: true,
-				jsx: "preserve",
-				lib: ["dom", "es2015", "es2017.object", "es6", "es7"],
-				module: "esnext",
-				moduleResolution: "node",
-				pretty: true,
-				removeComments: true,
-				rootDir: "",
-				sourceMap: true,
-				strict: false,
-				target: "esnext"
-			},
-			exclude: ["node_modules"]
-		},
-		tslint: {
-			extends: [
-				"tslint:latest",
-				"tslint-react",
-				"tslint-eslint-rules",
-				"tslint-config-prettier"
-			],
-			rules: {
-				"no-implicit-dependencies": [true, "dev"],
-				"no-namespace": false,
-				"no-submodule-imports": false
-			}
-		}
+		stylelint: {}
 	};
 	return {
 		babel: await cosmicWithFallback("babel"),
-		browserslist: {
-			...defaults.browserslist,
-			...(await cosmicWithFallback("browserslist"))
-		},
 		imhotep: {...defaults.imhotep, ...(await cosmicWithFallback("imhotep"))},
-		postcss: {
-			...defaults.postcss,
-			...(await cosmicWithFallback("postcss"))
-		},
+		postcss: await cosmicWithFallback("postcss"),
 		prettier: {
 			...defaults.prettier,
 			...(await cosmicWithFallback("prettier"))
 		},
-		stylelint: await cosmicWithFallback("stylelint"),
-		tsconfig: {
-			...defaults.tsconfig,
-			...JSON.parse(await readFile(path.resolve(cwd, "tsconfig.json"), "utf-8"))
-		},
-		tslint: {
-			...defaults.tslint,
-			...JSON.parse(await readFile(path.resolve(cwd, "tslint.json"), "utf-8"))
-		}
+		stylelint: await cosmicWithFallback("stylelint")
 	};
 };
 

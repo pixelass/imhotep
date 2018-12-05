@@ -1,4 +1,4 @@
-{
+module.exports = {
 	"presets": [
 		"@babel/react",
 		"@babel/typescript",
@@ -28,4 +28,4 @@
 			"plugins": ["react-hot-loader/babel"]
 		}
 	}
-}
+};

@@ -29,27 +29,35 @@ const formatAndWrite = async (file: string, options: IPrettierConfig): Promise<v
 export const prettier = async (): Promise<void> => {
 	const {prettier: config, imhotep} = await getConfig();
 	const jsFiles = await globby([
+		"**/.*.js",
 		"**/*.{js,jsx}",
+		"**/*.*.{js,jsx}",
 		"!node_modules",
 		`!${imhotep.lib.path}`,
-		`!${imhotep.output.path}`
+		`!${imhotep.output.path}`,
+		...imhotep.ignore.map(x => `!${x}`)
 	]);
 	const tsFiles = await globby([
 		"**/*.{ts,tsx}",
+		"**/*.*.{ts,tsx}",
 		"!node_modules",
-		`!${imhotep.types.path}`
+		`!${imhotep.types.path}`,
+		...imhotep.ignore.map(x => `!${x}`)
 	]);
 	const mdFiles = await globby([
 		"**/*.{md,markdown}",
-		"!node_modules"
+		"!node_modules",
+		...imhotep.ignore.map(x => `!${x}`)
 	]);
 	const jsonFiles = await globby([
 		"**/*.json",
-		"!node_modules"
+		"!node_modules",
+		...imhotep.ignore.map(x => `!${x}`)
 	]);
 	const rcFiles = await globby([
 		"**/.*rc",
-		"!node_modules"
+		"!node_modules",
+		...imhotep.ignore.map(x => `!${x}`)
 	]);
 
 	await Promise.all(jsFiles.map(file => formatAndWrite(file, {...config, parser: "babylon"})));

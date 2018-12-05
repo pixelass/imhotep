@@ -1,7 +1,7 @@
 const {existsSync} = require("fs");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+// const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const getConfig = require("../load").default;
 
 module.exports = async (env, argv) => {
@@ -13,7 +13,7 @@ module.exports = async (env, argv) => {
 	const customFavicon = path.resolve(cwd, appPath, "favicon.png");
 	const defaultFavicon = path.resolve(__dirname, "app/favicon.png");
 	const indexTemplate = existsSync(customIndex) ? customIndex : defaultIndex;
-	const favicon = existsSync(customFavicon) ? customFavicon : defaultFavicon;
+	// const favicon = existsSync(customFavicon) ? customFavicon : defaultFavicon;
 	return {
 		output: {
 			filename: "[name].js",
@@ -71,36 +71,7 @@ module.exports = async (env, argv) => {
 			new HtmlWebpackPlugin({
 				template: indexTemplate,
 				alwaysWriteToDisk: true,
-				filename: "index.html",
-				minify: {
-					collapseWhitespace: true,
-					removeComments: true,
-					removeRedundantAttributes: true,
-					removeScriptTypeAttributes: true,
-					removeStyleLinkTypeAttributes: true,
-					useShortDoctype: true
-				}
-			}),
-			new FaviconsWebpackPlugin({
-				logo: favicon,
-				prefix: "icons/",
-				emitStats: false,
-				statsFilename: "iconstats-[hash].json",
-				persistentCache: true,
-				inject: true,
-				background: "transparent",
-				icons: {
-					android: true,
-					appleIcon: true,
-					appleStartup: true,
-					coast: false,
-					favicons: true,
-					firefox: true,
-					opengraph: false,
-					twitter: false,
-					yandex: false,
-					windows: false
-				}
+				filename: "index.html"
 			})
 		]
 	};
