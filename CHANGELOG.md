@@ -1,6 +1,15 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.1.6](https://github.com/pixelass/imhotep/compare/v1.1.5...v1.1.6) (2019-06-16)
+
+
+### Bug Fixes
+
+* adjust types and update dependencies ([fb1364d](https://github.com/pixelass/imhotep/commit/fb1364d))
+
+
 
 <a name="1.1.5"></a>
 ## [1.1.5](https://github.com/pixelass/imhotep/compare/v1.1.4...v1.1.5) (2018-12-05)
