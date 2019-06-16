@@ -2,6 +2,7 @@ import cosmic from "cosmiconfig";
 import fs from "fs";
 import path from "path";
 import pify from "pify";
+import {IConfigurationFile} from "tslint/lib/configuration";
 
 const {readFile} = pify(fs);
 export interface IConfigObject {
@@ -22,6 +23,7 @@ export interface IPrettierConfig {
 export interface IStylelintConfig {
 	[key: string]: any;
 }
+export interface ITSlintConfig extends IConfigurationFile {}
 
 export interface IConfig {
 	babel: IBabelConfig;
@@ -39,7 +41,6 @@ const getConfig = async (): Promise<IConfig> => {
 
 	const defaults: IConfig = {
 		babel: {},
-		postcss: {},
 		imhotep: {
 			app: {
 				path: "app"
@@ -67,6 +68,7 @@ const getConfig = async (): Promise<IConfig> => {
 				path: "lib"
 			}
 		},
+		postcss: {},
 		prettier: {
 			arrowParens: "avoid",
 			bracketSpacing: false,

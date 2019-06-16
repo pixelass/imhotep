@@ -40,7 +40,7 @@ const dev = async (hot: boolean) => {
 			colors: true
 		}
 	};
-
+	// @ts-ignore
 	const server = new WebpackDevServer(compiler, devServerOptions);
 	server.listen(devServerOptions.port, devServerOptions.host, () => {
 		log.info(`Starting server on http://${devServerOptions.host}:${devServerOptions.port}`);

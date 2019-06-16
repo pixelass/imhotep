@@ -1,9 +1,7 @@
 import path from "path";
 import {lint, LinterResult, LintResult} from "stylelint";
 import getConfig, {IStylelintConfig} from "./load";
-import {fileLogger, lineLogger} from "./log";
-import log from "./log";
-import chalk from "chalk";
+import log, {fileLogger, lineLogger} from "./log";
 
 export interface IStylelintOptions {
 	config: IStylelintConfig;

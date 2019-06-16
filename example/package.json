@@ -2,9 +2,10 @@
   "name": "imhotep-example",
   "version": "1.0.0",
   "description": "example for imhotep",
-  "main": "index.js",
-  "author": "Gregor Adams <greg@pixelass.com>",
   "license": "MIT",
+  "author": "Gregor Adams <greg@pixelass.com>",
+  "sideEffects": false,
+  "main": "index.js",
   "scripts": {
     "babel": "imhotep babel",
     "build": "imhotep build",
@@ -13,8 +14,8 @@
     "dev": "imhotep dev",
     "format": "imhotep format",
     "lint": "imhotep lint",
-    "test": "imhotep test",
     "package": "imhotep pack",
+    "test": "imhotep test",
     "types": "imhotep types",
     "watch": "imhotep build --watch"
   },
@@ -25,23 +26,22 @@
     "last 2 Edge versions"
   ],
   "dependencies": {
+    "@types/react": "16.8.20",
+    "@types/react-dom": "16.8.4",
+    "@types/styled-components": "4.1.16",
     "imhotep": "../package",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "styled-components": "^4.1.1",
-    "tslib": "1.9.3"
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "styled-components": "4.3.1",
+    "tslib": "1.10.0"
   },
   "devDependencies": {
-    "@beyonk/google-fonts-webpack-plugin": "^1.2.1",
-    "@types/react": "^16.7.7",
-    "@types/react-dom": "^16.0.10",
-    "@types/styled-components": "^4.1.1",
-    "ava": "^0.25.0",
-    "babel-plugin-styled-components": "^1.8.0",
-    "babel-preset-minify": "^0.5.0",
-    "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-processor-styled-components": "^1.5.1",
-    "webpack": "^4.26.0"
-  },
-  "sideEffects": false
+    "@beyonk/google-fonts-webpack-plugin": "1.2.3",
+    "ava": "2.1.0",
+    "babel-plugin-styled-components": "1.10.1",
+    "babel-preset-minify": "0.5.0",
+    "stylelint-config-styled-components": "0.1.1",
+    "stylelint-processor-styled-components": "1.8.0",
+    "webpack": "4.34.0"
+  }
 }
