@@ -1,10 +1,7 @@
 import cosmic from "cosmiconfig";
-import fs from "fs";
-import path from "path";
-import pify from "pify";
+import {Configuration} from "stylelint";
 import {IConfigurationFile} from "tslint/lib/configuration";
 
-const {readFile} = pify(fs);
 export interface IConfigObject {
 	[key: string]: any;
 }
@@ -20,9 +17,9 @@ export interface IPostcssConfig {
 export interface IPrettierConfig {
 	[key: string]: any;
 }
-export interface IStylelintConfig {
-	[key: string]: any;
-}
+
+export interface IStylelintConfig extends Partial<Configuration> {}
+
 export interface ITSlintConfig extends IConfigurationFile {}
 
 export interface IConfig {
@@ -37,8 +34,6 @@ const cosmicWithFallback = async (moduleName: string): Promise<IConfigObject> =>
 	((await cosmic(moduleName).search()) || {config: {}}).config;
 
 const getConfig = async (): Promise<IConfig> => {
-	const cwd = process.cwd();
-
 	const defaults: IConfig = {
 		babel: {},
 		imhotep: {
@@ -81,7 +76,9 @@ const getConfig = async (): Promise<IConfig> => {
 			trailingComma: "none",
 			useTabs: true
 		},
-		stylelint: {}
+		stylelint: {
+			allowEmptyInput: true
+		}
 	};
 	return {
 		babel: await cosmicWithFallback("babel"),
@@ -91,7 +88,9 @@ const getConfig = async (): Promise<IConfig> => {
 			...defaults.prettier,
 			...(await cosmicWithFallback("prettier"))
 		},
-		stylelint: await cosmicWithFallback("stylelint")
+		stylelint: {
+			...defaults.stylelint,
+			...await cosmicWithFallback("stylelint")}
 	};
 };
 

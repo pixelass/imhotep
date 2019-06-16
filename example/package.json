@@ -15,6 +15,7 @@
     "format": "imhotep format",
     "lint": "imhotep lint",
     "package": "imhotep pack",
+    "refresh": "rm -rf node_modules/ && yarn",
     "test": "imhotep test",
     "types": "imhotep types",
     "watch": "imhotep build --watch"

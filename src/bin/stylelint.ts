@@ -1,17 +1,12 @@
 import path from "path";
-import {lint, LinterResult, LintResult} from "stylelint";
-import getConfig, {IStylelintConfig} from "./load";
+import {lint, LinterOptions, LinterResult, LintResult} from "stylelint";
+import getConfig from "./load";
 import log, {fileLogger, lineLogger} from "./log";
 
-export interface IStylelintOptions {
-	config: IStylelintConfig;
-	files: string[] | string;
-	fix?: boolean;
-	syntax?: "sass" | "scss" | "less" | "sugarss" | "html" | "styled" | "jsx";
-}
+export interface IStylelintOptions extends Partial<LinterOptions> {}
 
 const lintAndLog = async (options: IStylelintOptions): Promise<void> => {
-	const {results}: LinterResult = await lint(JSON.parse(JSON.stringify(options)));
+	const {results}: LinterResult = await lint(options);
 	results.forEach((result: LintResult) => {
 		const {warnings = [], deprecations = [], invalidOptionWarnings = [], source} = result;
 		const allItems = [...warnings, ...deprecations, ...invalidOptionWarnings];
@@ -33,7 +28,7 @@ export const stylelint = async (fix: boolean): Promise<void> => {
 	await lintAndLog({config, files: cssFiles, fix});
 	await lintAndLog({config, files: scssFiles, fix, syntax: "scss"});
 	await lintAndLog({config, files: lessFiles, fix, syntax: "less"});
-	await lintAndLog({config, files: styledFiles, fix, syntax: "styled"});
+	await lintAndLog({config, files: styledFiles, fix});
 };
 
 export default stylelint;
